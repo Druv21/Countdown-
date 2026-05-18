@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Celebration Pass</title>
+    <style>
+        :root {
+            --bg-color: #1a0508; /* Deep romantic wine red */
+            --card-bg: #2d0b11; /* Warm velvet rose dark background */
+            --heart-color: #ff3366; /* Vibrant love pink/red */
+        }
+
+        body {
+            font-family: 'Segoe UI', Georgia, serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 420px;
+            text-align: center;
+        }
+
+        /* Luxury Ticket Stub Design */
+        .ticket {
+            background: #fff5f6;
+            color: #2d0b11;
+            border-radius: 15px;
+            padding: 45px 25px;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+            border-left: 5px dashed var(--card-bg);
+            border-right: 5px dashed var(--card-bg);
+        }
+
+        /* Side Notch Ticket Cutouts */
+        .ticket::before, .ticket::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 20px;
+            height: 20px;
+            background: var(--card-bg);
+            border-radius: 50%;
+            transform: translateY(-50%);
+        }
+        .ticket::before { left: -11px; }
+        .ticket::after { right: -11px; }
+
+        .ticket-header {
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #8a6d71;
+            margin-bottom: 25px;
+        }
+
+        /* Countdown Typography */
+        .countdown-display {
+            font-size: 46px;
+            font-weight: 800;
+            color: #1a0508;
+            letter-spacing: 2px;
+            margin: 10px 0;
+            font-family: monospace, sans-serif;
+        }
+
+        .sub-label {
+            font-weight: bold;
+            color: var(--heart-color);
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+        }
+
+        /* Personalized Line of Love */
+        .love-note {
+            font-size: 14px;
+            color: #5c4346;
+            font-style: italic;
+            border-top: 1px dashed #e8cbd0;
+            padding-top: 20px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="ticket">
+        <div class="ticket-header">COUNTDOWN TO YOUR DAY</div>
+        
+        <!-- Live Countdown Value -->
+        <div id="timer" class="countdown-display">00:00:00</div>
+        
+        <div class="sub-label">Time Remaining 💖</div>
+
+        <!-- Corrected love line -->
+        <div class="love-note">
+            "Counting down every second to one of the most exciting days of the year. Can't wait to see you smile, my girl. ✨"
+        </div>
+    </div>
+</div>
+
+<script>
+    // Dynamically calculate the upcoming midnight target based on her device's local clock
+    const targetDate = new Date();
+    targetDate.setDate(targetDate.getDate() + 1);
+    targetDate.setHours(0, 0, 0, 0); // Sets target precisely to 12:00:00 AM tonight
+    
+    const midnightTimestamp = targetDate.getTime();
+
+    function updateTimerDisplay() {
+        const now = new Date().getTime();
+        const difference = midnightTimestamp - now;
+
+        if (difference <= 0) {
+            clearInterval(countdownEngine);
+            document.getElementById("timer").innerHTML = "00:00:00";
+            document.querySelector(".sub-label").innerHTML = "IT'S TIME! 🎂✨";
+            return;
+        }
+
+        // Calculate hours, minutes, and seconds left until midnight
+        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+        // Pad strings to keep formatting flawless (e.g., 02:05:09)
+        const formattedHours = String(hours).padStart(2, '0');
+        const formattedMinutes = String(minutes).padStart(2, '0');
+        const formattedSeconds = String(seconds).padStart(2, '0');
+
+        document.getElementById("timer").innerHTML = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+    }
+
+    // Refresh display layout dynamically per second tick
+    updateTimerDisplay();
+    const countdownEngine = setInterval(updateTimerDisplay, 1000);
+</script>
+</body>
+</html>
+
